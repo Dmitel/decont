@@ -1,0 +1,21 @@
+Informe de Ejecución del Pipeline
+vie 30 ene 2026 19:28:41 CET
+------------------------------------------------
+Muestra: C57BL_6NJ
+  [Métricas Cutadapt]
+Reads with adapters:                   198,349 (99.2%)
+Total basepairs processed:    10,000,000 bp
+  [Métricas STAR]
+                        Uniquely mapped reads % |	3.18%
+             % of reads mapped to multiple loci |	4.56%
+             % of reads mapped to too many loci |	0.77%
+------------------------------------------------
+Muestra: SPRET_EiJ
+  [Métricas Cutadapt]
+Reads with adapters:                   198,838 (99.4%)
+Total basepairs processed:    10,000,000 bp
+  [Métricas STAR]
+                        Uniquely mapped reads % |	2.89%
+             % of reads mapped to multiple loci |	4.21%
+             % of reads mapped to too many loci |	1.15%
+------------------------------------------------
