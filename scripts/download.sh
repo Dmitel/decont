@@ -1,18 +1,34 @@
-# This script should download the file specified in the first argument ($1),
-# place it in the directory specified in the second argument ($2),
-# and *optionally*:
-# - uncompress the downloaded file with gunzip if the third
-#   argument ($3) contains the word "yes"
-# - filter the sequences based on a word contained in their header lines:
-#   sequences containing the specified word in their header should be **excluded**
-#
-# Example of the desired filtering:
-#
-#   > this is my sequence
-#   CACTATGGGAGGACATTATAC
-#   > this is my second sequence
-#   CACTATGGGAGGGAGAGGAGA
-#   > this is another sequence
-#   CCAGGATTTACAGACTTTAAA
-#
-#   If $4 == "another" only the **first two sequence** should be output
+#!/bin/bash
+# scripts/download.sh
+
+URL=$1
+OUTDIR=$2
+UNCOMPRESS=$3
+FILTER_WORD=$4
+
+if [ -z "$URL" ] || [ -z "$OUTDIR" ]; then
+    echo "Error: Faltan argumentos. Uso: $0 <url> <outdir> [uncompress] [filter_word]"
+    exit 1
+fi
+
+mkdir -p "$OUTDIR"
+FILENAME=$(basename "$URL")
+OUTFILE="$OUTDIR/$FILENAME"
+
+# Descargar
+echo "Descargando $FILENAME..."
+wget -nc -O "$OUTFILE" "$URL"
+
+# Descomprimir (Si $3 contiene "yes")
+if [[ "$UNCOMPRESS" == "yes" ]]; then
+    echo "Descomprimiendo..."
+    gunzip -f "$OUTFILE"
+    OUTFILE="${OUTFILE%.gz}" # Actualizamos nombre quitando .gz
+fi
+
+# Filtrar (Si $4 existe)
+if [[ -n "$FILTER_WORD" ]]; then
+    echo "Filtrando secuencias con '$FILTER_WORD'..."
+    seqkit grep -n -v -p "$FILTER_WORD" "$OUTFILE" > "${OUTFILE}.tmp"
+    mv "${OUTFILE}.tmp" "$OUTFILE"
+fi
